@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlickFinder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #14213d;
+            color: white;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1f2a40;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+            nav a.active {
+                color: #00ffcc;
+            }
+
+        .favorite-button {
+            background-color: #00ffcc;
+            color: black;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .section {
+            display: none;
+            padding-top: 60px;
+        }
+
+            .section.active {
+                display: block;
+            }
+
+        .slider {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 10;
+        }
+
+            .slide-text h2 {
+                font-size: 36px;
+                font-weight: bold;
+                margin-bottom: 15px;
+            }
+
+            .slide-text p {
+                font-size: 16px;
+            }
+
+            .slide-text button {
+                margin-top: 20px;
+                padding: 10px 20px;
+                background-color: white;
+                color: black;
+                border: none;
+                font-weight: bold;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+        .slide-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Flick<span style="color:white">Finder</span></div>
+        <nav>
+            <a href="#" onclick="showSection('home')" class="active">Home</a>
+            <a href="#" onclick="showSection('tv')">TV Show</a>
+            <a href="#" onclick="showSection('movie')">Movie</a>
+            <a href="#" onclick="showSection('upcoming')">Upcoming</a>
+        </nav>
+        <button class="favorite-button" onclick="showSection('favorite')">Favorite</button>
+    </header>
+
+    <!-- HOME -->
+    <div id="home" class="section active">
+        <div class="slider">
+            <img id="homeSlide" class="slide-img" src="https://picsum.photos/id/1011/1200/800" />
+            <div class="slide-text">
+                <h2>Bringing the Big Screen to Your Screen</h2>
+                <p>Discover, critique, and celebrate movies<br>with honest reviews and fresh takes on every film</p>
+                <button>Discover More.</button>
+            </div>
+            <button class="slide-btn prev" onclick="changeSlide('home', -1)">&#10094;</button>
+            <button class="slide-btn next" onclick="changeSlide('home', 1)">&#10095;</button>
+        </div>
+    </div>
+
+    <!-- TV -->
+    <div id="tv" class="section">
+        <div class="slider">
+            <img id="tvSlide" class="slide-img" src="https://picsum.photos/id/1020/1200/800" />
+            <button class="slide-btn prev" onclick="changeSlide('tv', -1)">&#10094;</button>
+            <button class="slide-btn next" onclick="changeSlide('tv', 1)">&#10095;</button>
+        </div>
+        <h2>Top TV Shows</h2>
+    </div>
+
+    <!-- MOVIE -->
+    <div id="movie" class="section">
+        <div class="slider">
+            <img id="movieSlide" class="slide-img" src="https://picsum.photos/id/1021/1200/800" />
+            <button class="slide-btn prev" onclick="changeSlide('movie', -1)">&#10094;</button>
+            <button class="slide-btn next" onclick="changeSlide('movie', 1)">&#10095;</button>
+        </div>
+        <h2>Latest Movies</h2>
+    </div>
+
+    <!-- UPCOMING -->
+    <div id="upcoming" class="section">
+        <div class="slider">
+            <img id="upcomingSlide" class="slide-img" src="https://picsum.photos/id/1022/1200/800" />
+            <button class="slide-btn prev" onclick="changeSlide('upcoming', -1)">&#10094;</button>
+            <button class="slide-btn next" onclick="changeSlide('upcoming', 1)">&#10095;</button>
+        </div>
+        <h2>Upcoming Releases</h2>
+    </div>
+
+    <!-- FAVORITE -->
+    <div id="favorite" class="section">
+        <div class="slider">
+            <img id="favoriteSlide" class="slide-img" src="https://picsum.photos/id/1023/1200/800" />
+            <button class="slide-btn prev" onclick="changeSlide('favorite', -1)">&#10094;</button>
+            <button class="slide-btn next" onclick="changeSlide('favorite', 1)">&#10095;</button>
+        </div>
+        <h2>Your Favorite List</h2>
+    </div>
+
+    <script>
+        const sections = document.querySelectorAll(".section");
+        const navLinks = document.querySelectorAll("nav a");
+
+        const slideData = {
+            home: [
+                "https://picsum.photos/id/1011/1200/800",
+                "https://picsum.photos/id/1015/1200/800",
+                "https://picsum.photos/id/1025/1200/800"
+            ],
+            tv: [
+                "https://picsum.photos/id/1020/1200/800",
+                "https://picsum.photos/id/1030/1200/800",
+                "https://picsum.photos/id/1040/1200/800"
+            ],
+            movie: [
+                "https://picsum.photos/id/1021/1200/800",
+                "https://picsum.photos/id/1050/1200/800",
+                "https://picsum.photos/id/1060/1200/800"
+            ],
+            upcoming: [
+                "https://picsum.photos/id/1022/1200/800",
+                "https://picsum.photos/id/1070/1200/800",
+                "https://picsum.photos/id/1080/1200/800"
+            ],
+            favorite: [
+                "https://picsum.photos/id/1023/1200/800",
+                "https://picsum.photos/id/1090/1200/800",
+                "https://picsum.photos/id/1100/1200/800"
+            ]
+        };
+
+        let currentIndexes = {
+            home: 0,
+            tv: 0,
+            movie: 0,
+            upcoming: 0,
+            favorite: 0
+        };
+
+        function showSection(id) {
+            sections.forEach(s => s.classList.remove("active"));
+            document.getElementById(id).classList.add("active");
+
+            navLinks.forEach(link => link.classList.remove("active"));
+            document.querySelectorAll(`nav a[onclick*='${id}']`).forEach(link => link.classList.add("active"));
+        }
+
+        function changeSlide(section, dir) {
+            const slides = slideData[section];
+            currentIndexes[section] = (currentIndexes[section] + dir + slides.length) % slides.length;
+            document.getElementById(section + "Slide").src = slides[currentIndexes[section]];
+        }
+    </script>
+
+</body>
+</html>
